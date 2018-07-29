@@ -3,9 +3,7 @@
 
 int32 FBullCowGame::GetMaxTries() const { return MaxTries; }
 int32 FBullCowGame::GetCurrentTry() const { return CurrentTry;  }
-int32 FBullCowGame::GetWordLength() const { return WordLength;  }
-
-
+int32 FBullCowGame::GetWordLength() const { return Word.length(); }
 
 /// <summary>
 /// Resets the game.
@@ -32,7 +30,7 @@ void FBullCowGame::PlayGame()
 void FBullCowGame::PrintIntro() const
 {
 	std::cout << "Welcome to my first C++ game: Bulls and Cows\n\n";
-	std::cout << "Can you guess the " << WordLength << " letter isogram correct?\n";
+	std::cout << "Can you guess the " << GetWordLength() << " letter isogram correct?\n";
 }
 
 /// <summary>
@@ -46,8 +44,11 @@ void FBullCowGame::GetGuess()
 
 	// If gues is not valid ask again
 	std::getline(std::cin, guessedWord);
+	ToLower(guessedWord);
 
-	if(IsGuessValid(guessedWord))
+	// TODO fix
+	EWordStatus status = GetWordStatus(guessedWord);
+	if(status == OK)
 	{
 		GetFGameScore(guessedWord);
 	}
@@ -93,7 +94,7 @@ FGameScore FBullCowGame::GetFGameScore(const FText& guess)
 	std::cout << "You guessed the word " << guess << std::endl;
 	CurrentTry++;
 
-	for (int i = 0; i < guess.length(); i++)
+	for (auto i = 0; i < guess.length(); i++)
 	{
 		// If letter is in the word but at the wrong place -> add cow
 		if(Word.find(guess[i]) != FText::npos && guess[i] != Word[i])
@@ -119,7 +120,25 @@ FGameScore FBullCowGame::GetFGameScore(const FText& guess)
 /// <returns>
 ///   <c>true</c> if [is guess valid] [the specified ]; otherwise, <c>false</c>.
 /// </returns>
-bool FBullCowGame::IsGuessValid(const FText& guess) const
+EWordStatus FBullCowGame::GetWordStatus(const FText& guess) const
 {
-	return guess.length() == GetWordLength();
+	if (guess.length() != GetWordLength())
+		return INVALID_LENGTH;
+	if (!IsIsoGram(guess))
+		return NOT_ISOGRAM;
+
+	return OK;
+}
+
+bool FBullCowGame::IsIsoGram(const FText str) const
+{
+	return true;
+}
+
+void FBullCowGame::ToLower(FText& str)
+{
+	for (auto& i : str)
+	{
+		i = tolower(i);
+	}
 }

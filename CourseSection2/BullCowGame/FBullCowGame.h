@@ -11,6 +11,16 @@ struct FGameScore
 };
 
 /// <summary>
+/// State of a word
+/// </summary>
+enum EWordStatus
+{
+	OK,
+	NOT_ISOGRAM,
+	INVALID_LENGTH
+};
+
+/// <summary>
 /// Instace of the game
 /// </summary>
 class FBullCowGame
@@ -22,7 +32,9 @@ public:
 	int32 GetWordLength() const;
 	FGameScore GetFGameScore(const FText&);
 	void PrintIntro() const;
-	bool IsGuessValid(const FText&) const;
+	EWordStatus GetWordStatus(const FText&) const;
+	bool IsIsoGram(FText str) const;
+	static void ToLower(FText& str);
 	bool IsGameWon() const;
 	bool WantToPlayAgain() const;
 	void GetGuess();
@@ -33,6 +45,5 @@ public:
 private:
 	int32 CurrentTry = 1;
 	int32 MaxTries = 5;
-	int32 WordLength = 5;
 	FText Word = "worst";
 };
