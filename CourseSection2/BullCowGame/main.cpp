@@ -23,9 +23,9 @@ int main()
 {
 	bool wantToPlay = true;
 
-	BCGame.PrintIntro();
 	while(wantToPlay)
 	{
+		BCGame.PrintIntro();
 		BCGame.PlayGame();
 		wantToPlay = BCGame.WantToPlayAgain();
 		BCGame.Reset();

@@ -37,7 +37,7 @@ public:
 	static void ToLower(FText& str);
 	bool IsGameWon() const;
 	bool WantToPlayAgain() const;
-	void GetGuess();
+	FGameScore GetGuess();
 	void Reset();
 	void PlayGame();
 
@@ -46,4 +46,5 @@ private:
 	int32 CurrentTry = 1;
 	int32 MaxTries = 5;
 	FText Word = "worst";
+	FGameScore Score = { 0, 0 };
 };

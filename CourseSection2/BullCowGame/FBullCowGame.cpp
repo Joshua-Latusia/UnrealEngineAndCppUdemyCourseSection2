@@ -11,6 +11,9 @@ int32 FBullCowGame::GetWordLength() const { return Word.length(); }
 void FBullCowGame::Reset()
 {
 	CurrentTry = 1;
+	Score = { 0,0 };
+
+	std::cout << std::string(3, '\n');
 }
 
 /// <summary>
@@ -18,9 +21,18 @@ void FBullCowGame::Reset()
 /// </summary>
 void FBullCowGame::PlayGame()
 {
-	for (int32 i = 0; i < GetMaxTries(); i++)
+	while (GetCurrentTry() <= GetMaxTries() && !IsGameWon())
 	{
 		GetGuess();
+	}
+
+	if(IsGameWon())
+	{
+		std::cout << "You win" << std::endl << std::endl;  // todo print screen method
+	}
+	else
+	{
+		std::cout << "You lost" << std::endl << std::endl; // todo print screen method
 	}
 }
 
@@ -37,7 +49,7 @@ void FBullCowGame::PrintIntro() const
 /// Gets the guess from the console.
 /// </summary>
 /// <returns></returns>
-void FBullCowGame::GetGuess()
+FGameScore FBullCowGame::GetGuess()
 {
 	std::cout << "Guess: " << CurrentTry << std::endl;
 	FText guessedWord;
@@ -46,17 +58,25 @@ void FBullCowGame::GetGuess()
 	std::getline(std::cin, guessedWord);
 	ToLower(guessedWord);
 
-	// TODO fix
-	EWordStatus status = GetWordStatus(guessedWord);
-	if(status == OK)
+	const EWordStatus status = GetWordStatus(guessedWord);
+	switch(status)
 	{
-		GetFGameScore(guessedWord);
+		case OK:
+			return GetFGameScore(guessedWord);
+		case NOT_ISOGRAM:
+			std::cout << guessedWord << " Is not am isogram, please try again\n" << std::endl;
+			GetGuess();
+		break;
+		case INVALID_LENGTH:
+			std::cout << guessedWord << " Has an invalid length, please try again\n" << std::endl;
+			GetGuess();
+		break;
+		default:
+			std::cout << "Something went wrong while processing the word: " << guessedWord << std::endl;
+			GetGuess();
+		break;
 	}
-	else
-	{
-		std::cout << guessedWord << " Is not a valid word, please try again\n" << std::endl;
-		GetGuess();
-	}
+	return {};
 }
 
 /// <summary>
@@ -80,7 +100,7 @@ bool FBullCowGame::WantToPlayAgain() const
 /// </returns>
 bool FBullCowGame::IsGameWon() const
 {
-	return false;
+	return Score.Bulls == GetWordLength();
 }
 
 /// <summary>
@@ -108,8 +128,8 @@ FGameScore FBullCowGame::GetFGameScore(const FText& guess)
 		}
 	}
 
+	Score = score;
 	std::cout << "Your score is Bulls: " << score.Bulls << " Cows: " << score.Cows << std::endl << std::endl;
-
 	return score;
 }
 
