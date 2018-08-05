@@ -1,5 +1,7 @@
 #include "FBullCowGame.h"
 #include <iostream>
+#include <locale>
+#include <random>
 
 int32 FBullCowGame::GetMaxTries() const { return MaxTries; }
 int32 FBullCowGame::GetCurrentTry() const { return CurrentTry;  }
@@ -28,21 +30,65 @@ void FBullCowGame::PlayGame()
 
 	if(IsGameWon())
 	{
-		std::cout << "You win" << std::endl << std::endl;  // todo print screen method
+		std::cout << "You win" << std::endl << std::endl;
 	}
 	else
 	{
-		std::cout << "You lost" << std::endl << std::endl; // todo print screen method
+		std::cout << "You lost" << std::endl << std::endl;
 	}
 }
 
 /// <summary>
 /// Prints the intro to the console.
 /// </summary>
-void FBullCowGame::PrintIntro() const
+void FBullCowGame::PrintIntro()
 {
 	std::cout << "Welcome to my first C++ game: Bulls and Cows\n\n";
-	std::cout << "Can you guess the " << GetWordLength() << " letter isogram correct?\n";
+	std::cout << "How many letters do you wan't the Isogram to have (between " << MinWordtLength << " And " << MaxWordLength << " letters)" << std::endl;
+	SetHiddenWord(GetWordLengthInput());
+
+}
+
+/// <summary>
+/// Gets the word length input until its valid.
+/// </summary>
+/// <returns></returns>
+int32 FBullCowGame::GetWordLengthInput() const
+{
+	int length;
+	std::cin >> length;
+	// If not between min and max
+	if(!(length >= MinWordtLength && length <= MaxWordLength))
+	{
+		std::cout << length << " Is not between the range of " << MinWordtLength << " and " << MaxWordLength << " So please try again \n";
+		return  GetWordLengthInput();
+	}
+
+	std::cin.ignore();
+	return length;
+}
+
+/// <summary>
+/// Sets the hidden word with chosen length.
+/// </summary>
+/// <param name="wordLength">Length of the word.</param>
+void FBullCowGame::SetHiddenWord(int32 wordLength)
+{
+	std::vector<std::string> words;
+	
+	// Get words with length player wants
+	for (const auto& word : IsoGramList)
+	{
+		if (word.length() == wordLength)
+		{
+			words.push_back(word);
+		}
+	}
+	std::random_device random_device;
+	std::mt19937 engine{ random_device() };
+	std::uniform_int_distribution<int> dist(0, words.size() - 1);
+
+	Word = words[dist(engine)];
 }
 
 /// <summary>
