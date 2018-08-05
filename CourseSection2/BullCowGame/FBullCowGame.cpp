@@ -43,7 +43,7 @@ void FBullCowGame::PlayGame()
 /// </summary>
 void FBullCowGame::PrintIntro()
 {
-	std::cout << "Welcome to my first C++ game: Bulls and Cows\n\n";
+	std::cout << "Welcome to my first C++ game: Bulls and Cows (made by: Joshua Latusia)\n\n";
 	std::cout << "How many letters do you wan't the Isogram to have (between " << MinWordtLength << " And " << MaxWordLength << " letters)" << std::endl;
 	SetHiddenWord(GetWordLengthInput());
 
@@ -196,8 +196,23 @@ EWordStatus FBullCowGame::GetWordStatus(const FText& guess) const
 	return OK;
 }
 
-bool FBullCowGame::IsIsoGram(const FText str) const
+/// <summary>
+/// Determines whether string is isogram
+/// </summary>
+/// <param name="str">The string.</param>
+/// <returns>
+///   <c>true</c> if [is iso gram] [the specified string]; otherwise, <c>false</c>.
+/// </returns>
+bool FBullCowGame::IsIsoGram(const FText& str)
 {
+	std::vector<char> cstr(str.c_str(), str.c_str() + str.size() + 1);
+	for(auto i = 0; i < str.length(); i++)
+	{
+		if(cstr[i] == cstr[i + 1])
+		{
+			return false;
+		}
+	}
 	return true;
 }
 

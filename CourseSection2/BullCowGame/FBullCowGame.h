@@ -34,7 +34,7 @@ public:
 	FGameScore GetFGameScore(const FText&);
 	void PrintIntro();
 	EWordStatus GetWordStatus(const FText&) const;
-	bool IsIsoGram(FText str) const;
+	static bool IsIsoGram(const FText& str);
 	static void ToLower(FText& str);
 	bool IsGameWon() const;
 	bool WantToPlayAgain() const;

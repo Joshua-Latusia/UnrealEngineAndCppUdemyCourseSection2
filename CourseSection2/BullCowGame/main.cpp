@@ -1,4 +1,3 @@
-#include <iostream>
 #include <string>
 #include "FBullCowGame.h"
 
@@ -22,7 +21,6 @@ FBullCowGame BCGame;
 int main()
 {
 	bool wantToPlay = true;
-
 	while(wantToPlay)
 	{
 		BCGame.PrintIntro();
