@@ -72,7 +72,7 @@ int32 FBullCowGame::GetWordLengthInput() const
 /// Sets the hidden word with chosen length.
 /// </summary>
 /// <param name="wordLength">Length of the word.</param>
-void FBullCowGame::SetHiddenWord(int32 wordLength)
+void FBullCowGame::SetHiddenWord(const int32 wordLength)
 {
 	std::vector<std::string> words;
 	
@@ -86,7 +86,7 @@ void FBullCowGame::SetHiddenWord(int32 wordLength)
 	}
 	std::random_device random_device;
 	std::mt19937 engine{ random_device() };
-	std::uniform_int_distribution<int> dist(0, words.size() - 1);
+	const std::uniform_int_distribution<int> dist(0, words.size() - 1);
 
 	Word = words[dist(engine)];
 }
