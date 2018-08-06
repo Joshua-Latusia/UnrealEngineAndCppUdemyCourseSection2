@@ -12,6 +12,7 @@ using int32 = int;
 void PlayGame();
 bool WantToPlayAgain();
 
+// Objects
 FBullCowGame BCGame;
 
 /// <summary>

@@ -5,6 +5,9 @@
 using FText = std::string;
 using int32 = int;
 
+/// <summary>
+/// The score of the game
+/// </summary>
 struct FGameScore
 {
 	int32 Bulls = 0;
@@ -58,5 +61,5 @@ private:
 	int32 CurrentTry = 1;
 	FText Word;
 	FGameScore Score = { 0, 0 };
-	std::vector<FText> IsoGramList = { "mac", "mad", "man", "rule", "raid", "haze", "heart", "haste", "bread" };
+	const std::vector<FText> IsoGramList = { "mac", "mad", "man", "rule", "raid", "haze", "heart", "haste", "bread" };
 };

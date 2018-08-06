@@ -79,7 +79,8 @@ void FBullCowGame::SetHiddenWord(const int32 wordLength)
 	// Get words with length player wants
 	for (const auto& word : IsoGramList)
 	{
-		if (word.length() == wordLength)
+		const int32 currentWordLength = word.length();
+		if (currentWordLength == wordLength)
 		{
 			words.push_back(word);
 		}
@@ -160,7 +161,8 @@ FGameScore FBullCowGame::GetFGameScore(const FText& guess)
 	std::cout << "You guessed the word " << guess << std::endl;
 	CurrentTry++;
 
-	for (auto i = 0; i < guess.length(); i++)
+	const auto guessLength = guess.length();
+	for (unsigned int i = 0; i < guessLength; i++)
 	{
 		// If letter is in the word but at the wrong place -> add cow
 		if(Word.find(guess[i]) != FText::npos && guess[i] != Word[i])
@@ -188,7 +190,7 @@ FGameScore FBullCowGame::GetFGameScore(const FText& guess)
 /// </returns>
 EWordStatus FBullCowGame::GetWordStatus(const FText& guess) const
 {
-	if (guess.length() != GetWordLength())
+	if (static_cast<int>(guess.length()) != GetWordLength())
 		return INVALID_LENGTH;
 	if (!IsIsoGram(guess))
 		return NOT_ISOGRAM;
@@ -206,7 +208,8 @@ EWordStatus FBullCowGame::GetWordStatus(const FText& guess) const
 bool FBullCowGame::IsIsoGram(const FText& str)
 {
 	std::vector<char> cstr(str.c_str(), str.c_str() + str.size() + 1);
-	for(auto i = 0; i < str.length(); i++)
+	const auto strLength = str.length();
+	for(unsigned int i = 0; i < strLength; i++)
 	{
 		if(cstr[i] == cstr[i + 1])
 		{
